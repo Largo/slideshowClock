@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="http://getbootstrap.com/2.3.2/assets/css/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-backstretch/2.0.4/jquery.backstretch.min.js"></script>
+</head>
+  <meta charset="utf-8">
+  <title>Slideshow</title>
+
+<style>
+    #clock {
+      font-size: 80px;
+    }
+
+    .wrap {
+      text-align: center;
+    }
+
+    .outer-wrap {
+      margin-top: 220px;
+    }
+
+    .box {
+      margin: 0 auto;
+      text-align: center;
+      background-color: rgba(75, 77, 78, 0.6);
+      color: #fff;
+      padding: 30px;
+    }
+
+    @media (min-device-width: 768px) {
+      .outer-wrap {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+        margin-left: -200px;
+      }
+
+      .wrap {
+          width: 400px;
+         margin: 0 auto;
+      }
+    }
+</style>
+</head>
+<body onload="updateClock(); setInterval('updateClock()', 1000 )">
+  <div class="outer-wrap">
+    <div class="box wrap">
+     <h1 id="clock">&nbsp;</h1>
+  </div>
+  </div>
+  
+<script>
+/* Configure this here: */
+
+// add your photofilenames here. 
+// Better downsize your images, if you add many here.
+var urls = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg"];
+var percentageWatch = false; // change this if you like your minutes as percentage of an hour
+var timeUntilImageChanges = 4000; // in miliseconds
+var timeToFade = 1000; // miliseconds. 1000ms = 1s
+    
+/* end of configuration area */
+    
+$.backstretch(urls, {duration: timeUntilImageChanges, fade: timeToFade});
+    
+function updateClock() {
+    var currentTime = new Date();
+
+    var currentHours = currentTime.getHours();
+    var currentMinutes = currentTime.getMinutes();
+    var currentSeconds = currentTime.getSeconds();
+
+    
+    if (percentageWatch) {
+      // convert minutes and seconds into percentages
+     // currentMinutes = Math.round((currentMinutes / 60 * 100 ));
+        // 0.01 + 0.0001
+      currentMinutes = Math.round(( ((currentMinutes / 60) + currentSeconds / 60 / 100) * 100 ));
+       currentSeconds =  Math.round((currentSeconds / 60 * 100));
+
+      // Pad the minutes and seconds with leading zeros, if required
+      currentHours = ( currentHours < 10 ? "0" : "" ) + currentHours;
+      currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
+      currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds;
+
+      // Compose the string for display
+      //var currentTimeString = currentHours + 'h' + " : " + currentMinutes + '%' + " : " + currentSeconds + '%';
+      var currentTimeString = currentHours + 'h' + " : " + currentMinutes + '%';
+    } else {
+      // Pad the minutes and seconds with leading zeros, if required
+      currentHours = ( currentHours < 10 ? "0" : "" ) + currentHours;
+      currentMinutes = ( currentMinutes < 10 ? "0" : "" ) + currentMinutes;
+      currentSeconds = ( currentSeconds < 10 ? "0" : "" ) + currentSeconds
+      var currentTimeString = currentHours + "h"  + " : " + currentMinutes + "m";
+    }
+  // Update the time display
+  document.getElementById("clock").firstChild.nodeValue = currentTimeString;
+  $('title').html(currentTimeString);
+}
+            
+</script>
+</body>
+</html>
